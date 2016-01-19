@@ -1,5 +1,9 @@
 package main;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
@@ -12,16 +16,47 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import net.milkbowl.vault.economy.Economy;
+
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.RegisteredServiceProvider;
 
 public class Main extends JavaPlugin implements Listener {
+	String info = "";
+	public static Economy econ = null;
 
 	public void onEnable() {
+		
+		//Vaule
+		if (!setupEconomy()) {
+			System.out.println(
+					String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
+			getServer().getPluginManager().disablePlugin(this);
+			return;
+		}
 
-		getServer().getPluginManager().registerEvents(this, this);
-		this.getCommand("basic").setExecutor(new gamble(this));
+		//end vault
+		getCommand("gamble").setExecutor(new gamble(this));
+		;
 		System.out.println("CityGamble has been enabled");
+
 	}
+	
+	//start setup economy
+
+	private boolean setupEconomy() {
+		if (getServer().getPluginManager().getPlugin("Vault") == null) {
+			return false;
+		}
+		RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+		if (rsp == null) {
+			return false;
+		}
+		econ = rsp.getProvider();
+		return econ != null;
+	}
+	
+	//end eceonomy
 
 	public String CalculateWinner() {
 		String winner = "";
@@ -42,6 +77,5 @@ public class Main extends JavaPlugin implements Listener {
 
 		return winner;
 	}
-	
 
 }
