@@ -38,8 +38,7 @@ public class gamble implements CommandExecutor {
 	// Red, Black, Green
 	String ticketSetup = "0-0-0";
 
-	// hashmap
-	HashMap<String, String> playerTickets = new HashMap<String, String>();
+
 
 	// Define our stacks of items.
 	protected ItemStack redwool;

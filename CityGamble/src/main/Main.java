@@ -24,6 +24,9 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 public class Main extends JavaPlugin implements Listener {
 	String info = "";
 	public static Economy econ = null;
+	
+	// hashmap
+	static HashMap<String, String> playerTickets = new HashMap<String, String>();
 
 	public void onEnable() {
 		
