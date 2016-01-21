@@ -2,19 +2,20 @@ package main;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.material.MaterialData;
 
 import net.md_5.bungee.api.ChatColor;
 import net.milkbowl.vault.economy.EconomyResponse;
 
 public class ticketCount {
 
-	public void ticketCount(String color, String player) {
+	public static void ticketCounter(String color, String player) {
 
 		Charge(player, 20000);
 		addTicketValue(color, player);
 	}
 
-	public void Charge(String player, int amount) {
+	public static void Charge(String player, int amount) {
 
 		// let's charge the player for a red ticket. given to us when calling
 		// "charge"
@@ -38,7 +39,7 @@ public class ticketCount {
 
 	}
 
-	public void addTicketValue(String player, String color) {
+	public static void addTicketValue(String player, String color) {
 		// TODO: We need to move this to it's own class.
 		String ticketRed = Main.playerTickets.get(Bukkit.getPlayer(player))
 				.split("-")[0];

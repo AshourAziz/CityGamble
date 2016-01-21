@@ -38,8 +38,6 @@ public class gamble implements CommandExecutor {
 	// Red, Black, Green
 	String ticketSetup = "0-0-0";
 
-
-
 	// Define our stacks of items.
 	protected ItemStack redwool;
 
@@ -59,7 +57,7 @@ public class gamble implements CommandExecutor {
 		// Red, Black, LimeGreen
 		myInventory.setItem(3, new ItemStack(Material.WOOL, 1, (byte) 14));
 		myInventory.setItem(5, new ItemStack(Material.WOOL, 1, (byte) 15));
-		myInventory.setItem(2, new ItemStack(Material.WOOL, 7, (byte) 5));
+		myInventory.setItem(7, new ItemStack(Material.WOOL, 7, (byte) 5));
 	}
 
 	public gamble(Main plugin) {
@@ -89,48 +87,23 @@ public class gamble implements CommandExecutor {
 		if (inventory.getName().equals(myInventory.getName())) {
 			// Check if the player is null, if so we'll set him with the
 			// defeault setup.
-			if (playerTickets.get(player.getName()) == null) {
-				playerTickets.put(player.getName(), ticketSetup);
+			if (Main.playerTickets.get(player.getName()) == null) {
+				Main.playerTickets.put(player.getName(), ticketSetup);
 			}
 
 			// Cancel the event
 			event.setCancelled(true);
 
-			// First we'll do our setup for Red tickets, checking if it's
-			// similar to redwool
-			if (clicked.isSimilar(redwool)) {
+			if (clicked.equals(myInventory.getItem(3))) {
+				// slot number 3 is red.
+				ticketCount.ticketCounter("red", player.getName());
+			} else if (clicked.equals(myInventory.getItem(5))) {
+				// slot 5 is black
+				ticketCount.ticketCounter("black", player.getName());
 
-				// TODO: We need to move this to it's own class.
-				String ticketRed = playerTickets.get(player.getName()).split("-")[0];
-				String ticketBlack = playerTickets.get(player.getName()).split("-")[1];
-				String ticketGreen = playerTickets.get(player.getName()).split("-")[2];
-
-				// let's charge the player for a red ticket. $20,000 Cost.
-				EconomyResponse r = Main.econ.bankWithdraw(player.getName(), 20000);
-				if (r.transactionSuccess()) {
-					player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + ChatColor.BOLD + "Gamble"
-							+ ChatColor.DARK_GRAY + "]" + ChatColor.AQUA + "You've purchased a " + ChatColor.RED + "Red"
-							+ ChatColor.AQUA + " gamble ticket, cost of $20,00 GOOD LUCK!");
-				} else {
-					player.sendMessage("" + ChatColor.DARK_RED + ChatColor.BOLD
-							+ "ERROR OCCURED while purching a RED Ticket, please contact staff with a screenshot of this message!");
-				}
-
-				// Let's parse the red ticket count into an int
-				int redcount = Integer.parseInt(ticketRed);
-
-				// We're going to add one to that count, because we just bought
-				// a ticket
-				redcount++;
-
-				// We're going to transfer it back into a string
-				ticketRed = Integer.toString(redcount);
-
-				// recompile the amount of tickets this player has
-				String recompile = ticketRed + "-" + ticketBlack + "-" + ticketGreen;
-
-				// we're puting to put him back into the hashmap
-				playerTickets.put(player.getName(), recompile);
+			} else if (clicked.equals(myInventory.getItem(7))) {
+				// slot 7 is green
+				ticketCount.ticketCounter("green", player.getName());
 
 			}
 
@@ -139,5 +112,4 @@ public class gamble implements CommandExecutor {
 		// playerTickets.put(player.getName(), "Red-" + ticketsbought);
 
 	}
-
 }
