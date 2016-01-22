@@ -1,0 +1,7 @@
+name: CityGamble
+version: 1.0
+main: main.Main
+author: CityPrison
+commands:
+    gamble:
+        description: Opens GUI to purchase tickets.
