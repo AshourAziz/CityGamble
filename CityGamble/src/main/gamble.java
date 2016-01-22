@@ -32,11 +32,10 @@ public class gamble implements CommandExecutor {
 
 	private Main plugin;
 
-	// Create our inventory
-	public static Inventory myInventory = Bukkit.createInventory(null, 18, "Colors!");
+
 
 	// Red, Black, Green
-	String ticketSetup = "0-0-0";
+	static String ticketSetup = "0-0-0";
 
 	// Define our stacks of items.
 	protected ItemStack redwool;
@@ -55,9 +54,9 @@ public class gamble implements CommandExecutor {
 
 		// This will add the three items.
 		// Red, Black, LimeGreen
-		myInventory.setItem(3, new ItemStack(Material.WOOL, 1, (byte) 14));
-		myInventory.setItem(5, new ItemStack(Material.WOOL, 1, (byte) 15));
-		myInventory.setItem(7, new ItemStack(Material.WOOL, 7, (byte) 5));
+		API.myInventory().setItem(3, new ItemStack(Material.WOOL, 1, (byte) 14));
+		API.myInventory().setItem(5, new ItemStack(Material.WOOL, 1, (byte) 15));
+		API.myInventory().setItem(7, new ItemStack(Material.WOOL, 7, (byte) 5));
 	}
 
 	public gamble(Main plugin) {
@@ -69,7 +68,7 @@ public class gamble implements CommandExecutor {
 
 		if (cmd.getName().equalsIgnoreCase("gamble")) {
 			Player player = (Player) sender;
-			player.openInventory(myInventory);
+			player.openInventory(API.myInventory());
 
 			return true;
 		}
@@ -77,39 +76,24 @@ public class gamble implements CommandExecutor {
 		return false;
 	}
 
-	@EventHandler
-	public void onInventoryClick(InventoryClickEvent event) {
-		Player player = (Player) event.getWhoClicked();
-		ItemStack clicked = event.getCurrentItem();
-		Inventory inventory = event.getInventory();
+	public String calculateWinningColor() {
+		int winner = (int) Math.random() * 100;
 
-		// Check if it's our inventory
-		if (inventory.getName().equals(myInventory.getName())) {
-			// Check if the player is null, if so we'll set him with the
-			// defeault setup.
-			if (Main.playerTickets.get(player.getName()) == null) {
-				Main.playerTickets.put(player.getName(), ticketSetup);
-			}
+		String winningColor = "";
 
-			// Cancel the event
-			event.setCancelled(true);
+		if (winner > 0 && winner < 11) {
+			winningColor = "red";
 
-			if (clicked.equals(myInventory.getItem(3))) {
-				// slot number 3 is red.
-				ticketCount.ticketCounter("red", player.getName());
-			} else if (clicked.equals(myInventory.getItem(5))) {
-				// slot 5 is black
-				ticketCount.ticketCounter("black", player.getName());
+		} else if (winner > 11 && winner < 31) {
+			winningColor = "black";
+		} else if (winner > 31 && winner < 61) {
+			winningColor = "green";
 
-			} else if (clicked.equals(myInventory.getItem(7))) {
-				// slot 7 is green
-				ticketCount.ticketCounter("green", player.getName());
-
-			}
-
+		} else if (winner > 61 && winner < 101) {
+			winningColor = "blue";
 		}
-
-		// playerTickets.put(player.getName(), "Red-" + ticketsbought);
+		return winningColor;
 
 	}
+
 }

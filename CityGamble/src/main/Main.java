@@ -22,15 +22,18 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 public class Main extends JavaPlugin implements Listener {
+
+	private static Main instance;
+
 	String info = "";
 	public static Economy econ = null;
-	
+
 	// hashmap
-	static HashMap<String, String> playerTickets = new HashMap<String, String>();
+	public static HashMap<String, String> playerTickets = new HashMap<String, String>();
 
 	public void onEnable() {
-		
-		//Vaule
+
+		// Vaule
 		if (!setupEconomy()) {
 			System.out.println(
 					String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
@@ -38,14 +41,14 @@ public class Main extends JavaPlugin implements Listener {
 			return;
 		}
 
-		//end vault
+		// end vault
 		getCommand("gamble").setExecutor(new gamble(this));
 		;
 		System.out.println("CityGamble has been enabled");
 
 	}
-	
-	//start setup economy
+
+	// start setup economy
 
 	private boolean setupEconomy() {
 		if (getServer().getPluginManager().getPlugin("Vault") == null) {
@@ -58,8 +61,8 @@ public class Main extends JavaPlugin implements Listener {
 		econ = rsp.getProvider();
 		return econ != null;
 	}
-	
-	//end eceonomy
+
+	// end eceonomy
 
 	public String CalculateWinner() {
 		String winner = "";
@@ -79,6 +82,10 @@ public class Main extends JavaPlugin implements Listener {
 		}
 
 		return winner;
+	}
+
+	public static Main getInstance() {
+		return instance;
 	}
 
 }
