@@ -1,7 +1,9 @@
+# Copyright (R) McServers INC.
+# Developed by and managed by McServers INC. for the CityPrison & SwordPvP Network brand(s).
 name: CityGamble
 version: 1.0
 main: main.Main
-author: CityPrison
+author: McServers INC.
 commands:
     gamble:
         description: Opens GUI to purchase tickets.
